@@ -363,34 +363,30 @@ export default function ProductPublicDetail() {
         </div>
       </div>
 
-      {/* Atributos */}
+      {/* Características */}
       {product.attributes?.length > 0 && (
         <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-border sm:p-6">
           <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-500">
             <Layers className="h-4 w-4" />
-            Atributos
+            Características
           </h3>
-          <div className="mt-4 flex flex-wrap gap-6">
-            {product.attributes.map((attr, i) => (
-              <div key={i}>
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-                  {attr.name}
-                </p>
-                <div className="mt-1.5 flex flex-wrap gap-1.5">
-                  {(attr.values || [])
-                    .filter((v) => v?.trim())
-                    .map((val, j) => (
-                      <span
-                        key={j}
-                        className="rounded-lg border border-border bg-gray-50 px-3 py-1 text-xs font-medium text-gray-700"
-                      >
-                        {val}
-                      </span>
-                    ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <ul className="mt-4 space-y-2">
+            {product.attributes.map((attr, i) => {
+              const valuesStr = (attr.values || [])
+                .filter((v) => v?.trim())
+                .join(", ");
+                
+              if (!valuesStr) return null;
+                
+              return (
+                <li key={i} className="flex items-start text-sm text-gray-700">
+                  <span className="mr-2 text-gray-400">•</span>
+                  <span className="font-semibold text-gray-900 mr-1">{attr.name}:</span>
+                  <span>{valuesStr}</span>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
 

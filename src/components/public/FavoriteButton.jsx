@@ -1,0 +1,78 @@
+import { memo, useState } from "react";
+import { Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
+
+function FavoriteButtonBase({ product, size = "desktop", className = "" }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    setIsAnimating(true);
+    
+    // Toggle state and show toast
+    setIsFavorite(!isFavorite);
+    if (!isFavorite) {
+      toast.success("Agregado a lista de deseos");
+    } else {
+      toast.success("Eliminado de lista de deseos", { icon: "❌" });
+    }
+    
+    // reset click animation state
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 250);
+  };
+
+  const buttonSize = size === "mobile" ? "h-[38px] w-[38px]" : "h-[40px] w-[40px]";
+  const iconSize = size === "mobile" ? 18 : 20;
+
+  return (
+    <div 
+      className={`relative inline-flex items-center justify-center ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
+    >
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap rounded-md bg-gray-900 px-3 py-1.5 text-xs font-medium text-white shadow-lg pointer-events-none z-50 origin-bottom"
+            role="tooltip"
+          >
+            Agregar a lista de deseos
+            <div className="absolute left-1/2 top-full -mt-1 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.button
+        onClick={handleClick}
+        whileTap={{ scale: 0.9 }}
+        animate={isAnimating ? { scale: [1, 1.2, 1] } : {}}
+        transition={{ duration: 0.2 }}
+        aria-label="Agregar a lista de deseos"
+        className={`flex items-center justify-center rounded-full transition-colors duration-200 focus:outline-none ${buttonSize} bg-transparent text-gray-600 hover:bg-[#FFC107] hover:text-gray-900`}
+      >
+        <Star 
+          size={iconSize} 
+          className={isFavorite ? "text-yellow-500" : ""} 
+          fill={isFavorite ? "#EAB308" : "transparent"}
+          strokeWidth={1.5} 
+        />
+      </motion.button>
+    </div>
+  );
+}
+
+const FavoriteButton = memo(FavoriteButtonBase);
+export default FavoriteButton;

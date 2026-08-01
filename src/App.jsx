@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 import AdminRoute from "./routes/AdminRoute";
 
 const AdminLayout = lazy(() => import("./components/layout/AdminLayout"));
@@ -21,6 +22,7 @@ const GastosOperativos = lazy(() => import("./pages/admin/GastosOperativos"));
 const Pedidos = lazy(() => import("./pages/admin/Pedidos"));
 const Catalog = lazy(() => import("./pages/public/Catalog"));
 const ProductPublicDetail = lazy(() => import("./pages/public/ProductPublicDetail"));
+const CartPublic = lazy(() => import("./pages/public/CartPublic"));
 
 function PageLoader() {
   return (
@@ -34,7 +36,8 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Toaster position="top-right" />
+        <CartProvider>
+          <Toaster position="top-right" />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -65,6 +68,7 @@ function App() {
 
             <Route path="/catalogo" element={<PublicLayout />}>
               <Route index element={<Catalog />} />
+              <Route path="carrito" element={<CartPublic />} />
               <Route path=":id" element={<ProductPublicDetail />} />
             </Route>
 
@@ -73,6 +77,7 @@ function App() {
             <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
           </Routes>
         </Suspense>
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   );

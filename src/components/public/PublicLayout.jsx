@@ -1,9 +1,12 @@
 import { Outlet, Link } from "react-router-dom";
-import { LogIn } from "lucide-react";
+import { LogIn, ShoppingCart } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 import WhatsappFloat from "./WhatsappFloat";
 import { BRAND } from "../../config/brand";
 
 export default function PublicLayout() {
+  const { cartCount } = useCart();
+  
   return (
     <div className="min-h-screen bg-background-secondary">
       <header className="sticky top-0 z-40 border-b border-border bg-white/80 shadow-sm backdrop-blur-md">
@@ -24,14 +27,28 @@ export default function PublicLayout() {
             </div>
           </Link>
 
-          <Link
-            to="/login"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:border-primary hover:text-primary hover:shadow-md"
-          >
-            <LogIn className="h-4 w-4" />
-            <span className="hidden sm:inline">Iniciar sesión</span>
-            <span className="sm:hidden">Ingresar</span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link 
+              to="/catalogo/carrito"
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+            >
+              <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            
+            <Link
+              to="/login"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:border-primary hover:text-primary hover:shadow-md"
+            >
+              <LogIn className="h-4 w-4" />
+              <span className="hidden sm:inline">Iniciar sesión</span>
+              <span className="sm:hidden">Ingresar</span>
+            </Link>
+          </div>
         </div>
       </header>
 
