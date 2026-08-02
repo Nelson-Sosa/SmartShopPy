@@ -162,7 +162,7 @@ export default function Wishlist() {
                     {opt.label}
                   </option>
                 ))}
-              select>
+              </select>
             </div>
           </div>
         </div>
