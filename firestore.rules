@@ -20,6 +20,11 @@ service cloud.firestore {
       allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
       allow create: if isAuthenticated() && request.auth.uid == userId;
       allow update, delete: if isAuthenticated() && request.auth.uid == userId;
+
+      // Wishlist subcollection: only the owner can read/write their own wishlist
+      match /wishlist/{itemId} {
+        allow read, write: if isAuthenticated() && request.auth.uid == userId;
+      }
     }
 
     // Categories collection

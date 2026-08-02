@@ -1,12 +1,16 @@
 import { memo, useState } from "react";
-import { Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import toast from "react-hot-toast";
+import { useWishlist } from "../../context/WishlistContext";
 
 function FavoriteButtonBase({ product, size = "desktop", className = "" }) {
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const [isHovered, setIsHovered] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+
+  // Fallback para cuando product.id no está disponible directamente
+  const productId = product.id || product.productId;
+  const isFavorite = isInWishlist(productId);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -14,15 +18,17 @@ function FavoriteButtonBase({ product, size = "desktop", className = "" }) {
     
     setIsAnimating(true);
     
-    // Toggle state and show toast
-    setIsFavorite(!isFavorite);
-    if (!isFavorite) {
-      toast.success("Agregado a lista de deseos");
+    if (isFavorite) {
+      removeFromWishlist(productId);
     } else {
-      toast.success("Eliminado de lista de deseos", { icon: "❌" });
+      // Pasamos el producto completo
+      addToWishlist({
+        id: productId,
+        ...product
+      });
     }
     
-    // reset click animation state
+    // Reset click animation state
     setTimeout(() => {
       setIsAnimating(false);
     }, 250);
@@ -49,7 +55,7 @@ function FavoriteButtonBase({ product, size = "desktop", className = "" }) {
             className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap rounded-md bg-gray-900 px-3 py-1.5 text-xs font-medium text-white shadow-lg pointer-events-none z-50 origin-bottom"
             role="tooltip"
           >
-            Agregar a lista de deseos
+            {isFavorite ? "Quitar de favoritos" : "Agregar a favoritos"}
             <div className="absolute left-1/2 top-full -mt-1 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900"></div>
           </motion.div>
         )}
@@ -60,13 +66,13 @@ function FavoriteButtonBase({ product, size = "desktop", className = "" }) {
         whileTap={{ scale: 0.9 }}
         animate={isAnimating ? { scale: [1, 1.2, 1] } : {}}
         transition={{ duration: 0.2 }}
-        aria-label="Agregar a lista de deseos"
-        className={`flex items-center justify-center rounded-full transition-colors duration-200 focus:outline-none ${buttonSize} bg-transparent text-gray-600 hover:bg-[#FFC107] hover:text-gray-900`}
+        aria-label={isFavorite ? "Quitar de lista de deseos" : "Agregar a lista de deseos"}
+        className={`flex items-center justify-center rounded-full transition-colors duration-200 focus:outline-none ${buttonSize} bg-transparent text-gray-600 hover:bg-red-50 hover:text-danger`}
       >
-        <Star 
+        <Heart 
           size={iconSize} 
-          className={isFavorite ? "text-yellow-500" : ""} 
-          fill={isFavorite ? "#EAB308" : "transparent"}
+          className={isFavorite ? "text-danger" : ""} 
+          fill={isFavorite ? "currentColor" : "transparent"}
           strokeWidth={1.5} 
         />
       </motion.button>

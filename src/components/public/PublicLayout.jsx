@@ -1,11 +1,13 @@
 import { Outlet, Link } from "react-router-dom";
-import { LogIn, ShoppingCart } from "lucide-react";
+import { LogIn, ShoppingCart, Heart } from "lucide-react";
 import { useCart } from "../../context/CartContext";
+import { useWishlist } from "../../context/WishlistContext";
 import WhatsappFloat from "./WhatsappFloat";
 import { BRAND } from "../../config/brand";
 
 export default function PublicLayout() {
   const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   
   return (
     <div className="min-h-screen bg-background-secondary">
@@ -29,12 +31,24 @@ export default function PublicLayout() {
 
           <div className="flex items-center gap-3">
             <Link 
+              to="/catalogo/favoritos"
+              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-600 transition-colors hover:bg-red-50 hover:text-danger cursor-pointer"
+            >
+              <Heart className="h-5 w-5" />
+              {wishlistCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
+
+            <Link 
               to="/catalogo/carrito"
               className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
             >
               <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
                   {cartCount}
                 </span>
               )}

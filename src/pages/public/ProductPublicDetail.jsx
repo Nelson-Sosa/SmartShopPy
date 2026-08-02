@@ -18,6 +18,7 @@ import { getActiveProductById } from "../../services/publicProductService";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { getDetailImage, getThumbImage, getZoomImage } from "../../lib/cloudinary";
 import WhatsAppButton from "../../components/public/WhatsAppButton";
+import FavoriteButton from "../../components/public/FavoriteButton";
 
 // ---------------------------------------------------------------------------
 // Lightbox — Zoom modal sin librerías externas
@@ -352,12 +353,17 @@ export default function ProductPublicDetail() {
               </div>
             )}
 
-            <div className="mt-6">
-              <WhatsAppButton
-                productName={product.name}
-                productPrice={formatCurrency(product.salePrice)}
-                variant="inline"
-              />
+            <div className="mt-6 flex items-center gap-3">
+              <div className="flex-1">
+                <WhatsAppButton
+                  productName={product.name}
+                  productPrice={formatCurrency(product.salePrice)}
+                  variant="inline"
+                />
+              </div>
+              <div className="shrink-0 rounded-full border border-border bg-gray-50 p-1 shadow-sm">
+                <FavoriteButton product={product} size="desktop" />
+              </div>
             </div>
           </div>
         </div>
