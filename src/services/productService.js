@@ -82,6 +82,7 @@ export async function createProduct(data, userId) {
     ...sanitized,
     images: data.images || [],
     attributes: data.attributes || [],
+    specifications: data.specifications || [],
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
     createdBy: userId,
@@ -108,6 +109,7 @@ export async function updateProduct(id, data, userId) {
     ...sanitized,
     images: data.images || [],
     attributes: data.attributes || [],
+    specifications: data.specifications || [],
     updatedAt: serverTimestamp(),
     updatedBy: userId,
   });

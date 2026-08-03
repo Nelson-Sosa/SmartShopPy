@@ -298,6 +298,28 @@ export default function ProductDetail() {
           </div>
         </div>
 
+        {/* Especificaciones */}
+        {product.specifications?.length > 0 && (
+          <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-border">
+            <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-gray-500">
+              <Layers className="h-4 w-4" />
+              Especificaciones Técnicas
+            </h3>
+            <div className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+              {product.specifications.map((spec, i) => (
+                <div key={spec.id || i} className="flex flex-col border-b border-gray-100 pb-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    {spec.name}
+                  </span>
+                  <span className="mt-1 text-sm text-gray-800">
+                    {spec.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Atributos */}
         {product.attributes?.length > 0 && (
           <div className="rounded-xl bg-white p-5 shadow-sm ring-1 ring-border">
