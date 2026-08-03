@@ -85,6 +85,46 @@ export function validateAttributes(attributes) {
   return Object.keys(errors).length > 0 ? errors : null;
 }
 
+/**
+ * Validates a list of technical specifications.
+ * Each spec must have a non-empty name and value.
+ * Structure: [{ id: string, name: string, value: string }]
+ * Designed to be forward-compatible with filters, SEO, and product comparison.
+ */
+export function validateSpecifications(specifications) {
+  if (!specifications || specifications.length === 0) return null;
+
+  const errors = {};
+  specifications.forEach((spec, i) => {
+    const name = sanitizeText(spec.name || "");
+    const value = sanitizeText(spec.value || "");
+
+    if (!name && !value) {
+      // Skip completely empty rows silently — they'll be filtered on submit
+      return;
+    }
+    if (!name) {
+      errors[i] = "El nombre de la especificación es obligatorio.";
+      return;
+    }
+    if (!value) {
+      errors[i] = "El valor de la especificación es obligatorio.";
+      return;
+    }
+    if (name.length > 100) {
+      errors[i] = "El nombre no puede superar los 100 caracteres.";
+      return;
+    }
+    if (value.length > 500) {
+      errors[i] = "El valor no puede superar los 500 caracteres.";
+      return;
+    }
+  });
+
+  return Object.keys(errors).length > 0 ? errors : null;
+}
+
+
 export function validateDescription(desc) {
   if (!desc || !desc.trim()) return null;
   const sanitized = sanitizeText(desc);

@@ -8,11 +8,13 @@ import {
   validateStock,
   validateSku,
   validateAttributes,
+  validateSpecifications,
 } from "../../utils/productValidation";
 import { getCategories } from "../../services/categoryService";
 import { generateSku } from "../../services/productService";
 import ProductGallery from "./ProductGallery";
 import ProductAttributes from "./ProductAttributes";
+import ProductSpecifications from "./ProductSpecifications";
 
 function buildInitial(initialData) {
   if (!initialData) {
@@ -28,6 +30,10 @@ function buildInitial(initialData) {
       status: "active",
       images: [],
       attributes: [],
+      // specifications: [{ id, name, value }]
+      // Ordered list of technical specs. id is stable across renames.
+      // Ready for: SEO structured data, product comparator, advanced filters, CSV import/export.
+      specifications: [],
     };
   }
   return {
@@ -42,6 +48,7 @@ function buildInitial(initialData) {
     status: initialData.status || "active",
     images: initialData.images || [],
     attributes: initialData.attributes || [],
+    specifications: initialData.specifications || [],
   };
 }
 
@@ -127,6 +134,14 @@ export default function ProductForm({ initialData, categories, onSubmit, onCance
     });
   }
 
+  function handleSpecificationsChange(specifications) {
+    setForm((prev) => ({ ...prev, specifications }));
+    setErrors((prev) => {
+      const { specifications: specErr, ...rest } = prev;
+      return rest;
+    });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -144,6 +159,9 @@ export default function ProductForm({ initialData, categories, onSubmit, onCance
     const attrErrors = validateAttributes(form.attributes);
     if (attrErrors) newErrors.attributes = attrErrors;
 
+    const specErrors = validateSpecifications(form.specifications);
+    if (specErrors) newErrors.specifications = specErrors;
+
     setErrors(newErrors);
     setTouched(Object.fromEntries(fieldsToValidate.map((f) => [f, true])));
 
@@ -152,6 +170,11 @@ export default function ProductForm({ initialData, categories, onSubmit, onCance
     if (form.images.some((img) => img instanceof File)) {
       setUploadingImages(true);
     }
+
+    // Filter out completely blank spec rows before saving
+    const cleanedSpecs = (form.specifications || []).filter(
+      (s) => sanitizeText(s.name) || sanitizeText(s.value)
+    );
 
     onSubmit({
       ...form,
@@ -162,6 +185,7 @@ export default function ProductForm({ initialData, categories, onSubmit, onCance
       salePrice: Number(form.salePrice),
       stock: Number(form.stock) || 0,
       minimumStock: Number(form.minimumStock) || 0,
+      specifications: cleanedSpecs,
     });
   }
 
@@ -418,13 +442,35 @@ export default function ProductForm({ initialData, categories, onSubmit, onCance
         </div>
       </div>
 
-      {/* ATRIBUTOS */}
+      {/* ESPECIFICACIONES TÉCNICAS */}
+      <div>
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500">
+              Especificaciones Técnicas
+            </h3>
+            <p className="mt-1 text-xs text-gray-400">
+              Ficha técnica del producto. Se muestra como tabla en la vista pública.
+              Usá el ícono <span className="inline-block align-middle">⠿</span> para reordenar.
+            </p>
+          </div>
+        </div>
+        <div className="mt-4">
+          <ProductSpecifications
+            specifications={form.specifications}
+            onChange={handleSpecificationsChange}
+            errors={errors.specifications}
+          />
+        </div>
+      </div>
+
+      {/* VARIANTES */}
       <div>
         <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-500">
-          Atributos (Opcional)
+          Variantes (Opcional)
         </h3>
         <p className="mt-1 text-xs text-gray-400">
-          Agrega atributos como Color, Talle, Calce, etc. En futuras fases podrán convertirse en variantes con stock independiente.
+          Agrega variantes como Color, Talle, Calce, etc. En futuras fases podrán tener stock independiente.
         </p>
         <div className="mt-4">
           <ProductAttributes
