@@ -1,13 +1,33 @@
-import { Outlet, Link } from "react-router-dom";
-import { LogIn, ShoppingCart, Heart } from "lucide-react";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { LogIn, LogOut, ShoppingCart, Heart, User } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
+import { useAuth } from "../../context/AuthContext";
 import WhatsappFloat from "./WhatsappFloat";
 import { BRAND } from "../../config/brand";
 
 export default function PublicLayout() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
+  const { user, logout } = useAuth();
+
+  const isWishlistRoute = location.pathname.includes("/favoritos");
+  const isCartRoute = location.pathname.includes("/carrito");
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/catalogo");
+  };
+
+  // Obtener la inicial del usuario para el avatar
+  const userInitial = user?.displayName
+    ? user.displayName.charAt(0).toUpperCase()
+    : user?.email
+    ? user.email.charAt(0).toUpperCase()
+    : "U";
   
   return (
     <div className="min-h-screen bg-background-secondary">
@@ -32,36 +52,67 @@ export default function PublicLayout() {
           <div className="flex items-center gap-3">
             <Link 
               to="/catalogo/favoritos"
-              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-600 transition-colors hover:bg-red-50 hover:text-danger cursor-pointer"
+              className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer ${isWishlistRoute ? 'bg-red-50 text-danger ring-1 ring-danger/20' : 'bg-gray-50 text-gray-600 hover:bg-red-50 hover:text-danger'}`}
             >
-              <Heart className="h-5 w-5" />
-              {wishlistCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
-                  {wishlistCount}
-                </span>
-              )}
+              <Heart className={`h-5 w-5 ${isWishlistRoute ? 'fill-danger/20' : ''}`} />
+              <AnimatePresence>
+                {wishlistCount > 0 && (
+                  <motion.span 
+                    key={wishlistCount}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white shadow-sm ring-2 ring-white"
+                  >
+                    {wishlistCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </Link>
 
             <Link 
               to="/catalogo/carrito"
-              className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+              className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer ${isCartRoute ? 'bg-primary-light text-primary ring-1 ring-primary/20' : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}
             >
               <ShoppingCart className="h-5 w-5" />
-              {cartCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
-                  {cartCount}
-                </span>
-              )}
+              <AnimatePresence>
+                {cartCount > 0 && (
+                  <motion.span 
+                    key={cartCount}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm ring-2 ring-white"
+                  >
+                    {cartCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </Link>
             
-            <Link
-              to="/login"
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:border-primary hover:text-primary hover:shadow-md"
-            >
-              <LogIn className="h-4 w-4" />
-              <span className="hidden sm:inline">Iniciar sesión</span>
-              <span className="sm:hidden">Ingresar</span>
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white shadow-sm">
+                  {userInitial}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:border-danger hover:text-danger hover:shadow-md"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline">Cerrar sesión</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:border-primary hover:text-primary hover:shadow-md"
+              >
+                <LogIn className="h-4 w-4" />
+                <span className="hidden sm:inline">Iniciar sesión</span>
+                <span className="sm:hidden">Ingresar</span>
+              </Link>
+            )}
           </div>
         </div>
       </header>

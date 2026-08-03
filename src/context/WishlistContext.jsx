@@ -13,6 +13,7 @@ import {
   subscribeToWishlist,
   addToWishlist as addToWishlistService,
   removeFromWishlist as removeFromWishlistService,
+  removeMultipleFromWishlist as removeMultipleFromWishlistService,
 } from "../services/wishlistService";
 import AuthRequiredModal from "../components/wishlist/AuthRequiredModal";
 
@@ -113,6 +114,20 @@ export function WishlistProvider({ children }) {
     [user?.uid]
   );
 
+  const removeMultipleFromWishlist = useCallback(
+    async (productIds) => {
+      if (!user?.uid) return;
+      try {
+        await removeMultipleFromWishlistService(user.uid, productIds);
+        toast.success(`${productIds.length} productos eliminados`);
+      } catch (err) {
+        console.error("[Wishlist] Error al eliminar múltiples:", err);
+        toast.error("No se pudo eliminar los productos");
+      }
+    },
+    [user?.uid]
+  );
+
   const closeAuthModal = useCallback(() => setShowAuthModal(false), []);
 
   const wishlistCount = useMemo(() => wishlistItems.length, [wishlistItems]);
@@ -125,6 +140,7 @@ export function WishlistProvider({ children }) {
       isInWishlist,
       addToWishlist,
       removeFromWishlist,
+      removeMultipleFromWishlist,
       showAuthModal,
       closeAuthModal,
     }),
@@ -135,6 +151,7 @@ export function WishlistProvider({ children }) {
       isInWishlist,
       addToWishlist,
       removeFromWishlist,
+      removeMultipleFromWishlist,
       showAuthModal,
       closeAuthModal,
     ]

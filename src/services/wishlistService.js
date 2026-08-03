@@ -7,6 +7,7 @@ import {
   serverTimestamp,
   query,
   orderBy,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
@@ -59,4 +60,27 @@ export async function addToWishlist(uid, product) {
 export async function removeFromWishlist(uid, productId) {
   const ref = wishlistDoc(uid, productId);
   await deleteDoc(ref);
+}
+
+/**
+ * Elimina múltiples productos de la lista de deseos simultáneamente (Batch delete)
+ * @param {string} uid - ID del usuario logueado
+ * @param {string[]} itemIds - Array de IDs de productos a eliminar
+ * @returns {Promise<void>}
+ */
+export async function removeMultipleFromWishlist(uid, itemIds) {
+  if (!uid || !itemIds || itemIds.length === 0) return;
+
+  try {
+    const batch = writeBatch(db);
+    itemIds.forEach((itemId) => {
+      const ref = wishlistDoc(uid, itemId);
+      batch.delete(ref);
+    });
+    
+    await batch.commit();
+  } catch (error) {
+    console.error("Error al eliminar múltiples de wishlist:", error);
+    throw error;
+  }
 }
