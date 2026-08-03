@@ -1,26 +1,56 @@
-import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { LogIn, LogOut, ShoppingCart, Heart, User } from "lucide-react";
+import { Outlet, Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { LogIn, LogOut, ShoppingCart, Heart, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
 import { useAuth } from "../../context/AuthContext";
+import { useCategories } from "../../hooks/useCategories";
 import WhatsappFloat from "./WhatsappFloat";
+import CategoryNavigation from "./catalog/CategoryNavigation";
 import { BRAND } from "../../config/brand";
 
 export default function PublicLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
   const { user, logout } = useAuth();
+  const { categories } = useCategories();
+  
+  const [searchValue, setSearchValue] = useState(searchParams.get("q") || "");
 
   const isWishlistRoute = location.pathname.includes("/favoritos");
   const isCartRoute = location.pathname.includes("/carrito");
+  // Determinar si estamos en la ruta exacta del catálogo para marcar la categoría seleccionada
+  const isCatalogRoot = location.pathname === "/catalogo" || location.pathname === "/catalogo/";
+  const currentCategory = isCatalogRoot ? (searchParams.get("category") || "all") : null;
 
   const handleLogout = async () => {
     await logout();
     navigate("/catalogo");
   };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      navigate(`/catalogo?q=${encodeURIComponent(searchValue.trim())}`);
+    } else {
+      navigate(`/catalogo`);
+    }
+  };
+
+  const handleSelectCategory = (cat) => {
+    if (cat === "all") {
+      navigate("/catalogo");
+    } else {
+      navigate(`/catalogo?category=${encodeURIComponent(cat)}`);
+    }
+  };
+
+  // Extraer solo los nombres de las categorías activas (o todas)
+  const categoryNames = categories.map(c => c.name).sort();
 
   // Obtener la inicial del usuario para el avatar
   const userInitial = user?.displayName
@@ -32,7 +62,7 @@ export default function PublicLayout() {
   return (
     <div className="min-h-screen bg-background-secondary">
       <header className="sticky top-0 z-40 border-b border-border bg-white/80 shadow-sm backdrop-blur-md">
-        <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-24 max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link to="/catalogo" className="flex items-center gap-3 min-w-0">
             <img
               src={BRAND.logo}
@@ -48,6 +78,20 @@ export default function PublicLayout() {
               </p>
             </div>
           </Link>
+
+          {/* Buscador central prominente (solo Desktop) */}
+          <div className="hidden lg:flex flex-1 max-w-xl mx-8">
+            <form onSubmit={handleSearchSubmit} className="relative w-full">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar por nombre, descripción o categoría..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="w-full rounded-xl border border-border bg-gray-50 py-2.5 pl-10 pr-4 text-[15px] text-gray-800 placeholder-gray-400 outline-none transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20"
+              />
+            </form>
+          </div>
 
           <div className="flex items-center gap-3">
             <Link 
@@ -100,7 +144,7 @@ export default function PublicLayout() {
                   className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:border-danger hover:text-danger hover:shadow-md"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Cerrar sesión</span>
+                  <span className="hidden sm:inline">Cerrar</span>
                 </button>
               </div>
             ) : (
@@ -109,15 +153,21 @@ export default function PublicLayout() {
                 className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-border bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:border-primary hover:text-primary hover:shadow-md"
               >
                 <LogIn className="h-4 w-4" />
-                <span className="hidden sm:inline">Iniciar sesión</span>
-                <span className="sm:hidden">Ingresar</span>
+                <span className="hidden sm:inline">Entrar</span>
               </Link>
             )}
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+      {/* Navegación de Categorías Horizontal */}
+      <CategoryNavigation 
+        categories={categoryNames} 
+        selectedCategory={currentCategory} 
+        onSelectCategory={handleSelectCategory}
+      />
+
+      <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
         <Outlet />
       </main>
 

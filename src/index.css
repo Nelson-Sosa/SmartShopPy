@@ -46,4 +46,46 @@
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  /* Sidebar custom scrollbar */
+  .sidebar-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: #CBD5E1 transparent;
+  }
+  .sidebar-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+  .sidebar-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .sidebar-scroll::-webkit-scrollbar-thumb {
+    background-color: #CBD5E1;
+    border-radius: 4px;
+  }
+
+  /* Featured products carousel scroll snap */
+  .featured-scroll {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .featured-scroll > * {
+    scroll-snap-align: start;
+  }
+
+  /* Hero gradient pattern */
+  .hero-gradient {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1E40AF 100%);
+  }
+  .hero-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 60% 80%, rgba(255,255,255,0.06) 0%, transparent 45%);
+  }
+
+  /* Drawer overlay */
+  .drawer-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+  }
 }
