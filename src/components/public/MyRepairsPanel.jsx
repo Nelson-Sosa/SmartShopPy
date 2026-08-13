@@ -66,13 +66,31 @@ export default function MyRepairsPanel() {
     Promise.all(
       stored.map((r) =>
         getTechnicalServiceByCode(r.trackingCode)
-          .then((svc) => ({ code: r.trackingCode, status: svc?.status || null }))
-          .catch(() => ({ code: r.trackingCode, status: null }))
+          .then((svc) => ({ code: r.trackingCode, status: svc?.status || null, exists: !!svc }))
+          .catch(() => ({ code: r.trackingCode, status: null, exists: false }))
       )
     ).then((results) => {
       const map = {};
-      results.forEach(({ code, status }) => { map[code] = status; });
+      const validRepairs = [];
+      let storageChanged = false;
+
+      results.forEach(({ code, status, exists }) => {
+        if (exists) {
+          map[code] = status;
+          validRepairs.push(stored.find(r => r.trackingCode === code));
+        } else {
+          storageChanged = true; // Si fue borrada de la DB, la marcamos para eliminar del navegador
+        }
+      });
+      
       setStatuses(map);
+      
+      // Si alguna solicitud ya no existe en la DB, limpiamos el localStorage
+      if (storageChanged) {
+        localStorage.setItem(LS_KEY, JSON.stringify(validRepairs));
+        setRepairs(validRepairs);
+      }
+      
       setLoading(false);
     });
   }, [open]);
