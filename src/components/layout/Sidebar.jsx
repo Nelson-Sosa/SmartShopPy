@@ -16,7 +16,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { BRAND } from "../../config/brand";
+import BrandLogo from "../ui/BrandLogo";
 
 const mainNav = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -110,26 +110,12 @@ export default function Sidebar({ collapsed, mobileOpen, onClose, onToggle }) {
   function SidebarContent() {
     return (
       <div className="flex h-full flex-col bg-white">
-        <div className="flex h-24 shrink-0 items-center border-b border-border px-4">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <img
-              src={BRAND.logo}
-              alt={BRAND.name}
-              className={`shrink-0 object-contain transition-all duration-300 ${collapsed ? "h-14 w-14" : "h-24 w-auto"
-                }`}
-            />
-            <div
-              className={`flex-1 min-w-0 overflow-hidden whitespace-nowrap transition-all duration-300 ${collapsed ? "max-w-0 opacity-0" : "max-w-full opacity-100"
-                }`}
-            >
-              <p className="truncate text-base font-extrabold tracking-tight text-gray-800 sm:text-lg">
-                {BRAND.name}
-              </p>
-              <p className="truncate text-[11px] font-medium text-gray-600 leading-tight">
-                {BRAND.fullName}
-              </p>
-            </div>
-          </div>
+        <div className={`flex h-16 shrink-0 items-center border-b border-border px-3 ${collapsed ? "justify-center" : "justify-between"}`}>
+          {collapsed ? (
+            <BrandLogo size="sidebar-collapsed" noLink />
+          ) : (
+            <BrandLogo size="md" />
+          )}
           {mobileOpen && (
             <button
               onClick={onClose}
