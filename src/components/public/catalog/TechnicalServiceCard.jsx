@@ -1,15 +1,18 @@
 import { motion } from "framer-motion";
 import { Wrench, CheckCircle2, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SERVICES = [
-  "Diagnóstico",
-  "Mantenimiento",
-  "Formateo",
-  "Instalación de Software",
-  "Limpieza",
+  "Cambio de Pantalla o Batería",
+  "Reparación de Hardware",
+  "Mantenimiento Preventivo",
+  "Formateo y Software",
+  "Limpieza Interna",
 ];
 
 export default function TechnicalServiceCard() {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -29,7 +32,7 @@ export default function TechnicalServiceCard() {
 
       {/* Description */}
       <p className="mb-4 text-xs leading-relaxed text-gray-500 sm:text-sm">
-        ¿Tu computadora o notebook necesita reparación?
+        ¿Tu celular, computadora o notebook necesita reparación?
       </p>
 
       {/* Service List */}
@@ -49,9 +52,7 @@ export default function TechnicalServiceCard() {
 
       {/* CTA Button */}
       <button
-        onClick={() => {
-          /* Futuro: enlace a módulo de servicio técnico */
-        }}
+        onClick={() => navigate("/servicio-tecnico")}
         className="mt-auto flex w-full items-center justify-center gap-2 rounded-xl bg-amber-50 px-4 py-2.5 text-xs font-semibold text-amber-700 transition-all hover:bg-amber-100 hover:shadow-sm active:scale-[0.97] sm:text-sm"
       >
         Solicitar Servicio
