@@ -64,7 +64,7 @@ export default function PublicLayout() {
   return (
     <div className="min-h-screen bg-background-secondary">
       <header className="sticky top-0 z-40 border-b border-border bg-white/80 shadow-sm backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-20 sm:h-24 max-w-[1600px] items-center justify-between px-4 sm:px-6 lg:px-8">
           <BrandLogo size="lg" />
 
           {/* Buscador central prominente (solo Desktop) */}

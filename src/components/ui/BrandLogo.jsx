@@ -30,11 +30,11 @@ export default function BrandLogo({
   to = "/catalogo",
 }) {
   const sizeStyles = {
-    sm:                "h-auto w-[clamp(120px,16vw,150px)]",
-    md:                "h-auto w-[clamp(130px,18vw,165px)]",
-    lg:                "h-auto w-[clamp(165px,15vw,195px)]",
+    sm:                "w-[clamp(120px,16vw,150px)] max-h-full",
+    md:                "w-[clamp(130px,18vw,165px)] max-h-full",
+    lg:                "w-[clamp(165px,15vw,195px)] max-h-[80px]",
     "sidebar-collapsed": "h-12 w-12 object-contain",
-    none:              "h-auto w-[clamp(130px,18vw,165px)]",
+    none:              "w-[clamp(130px,18vw,165px)] max-h-full",
   };
 
   const img = (
