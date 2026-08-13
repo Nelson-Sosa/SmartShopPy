@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { LogIn, LogOut, ShoppingCart, Heart, Search, Wrench } from "lucide-react";
+import { LogIn, LogOut, ShoppingCart, Heart, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useCart } from "../../context/CartContext";
@@ -8,6 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useCategories } from "../../hooks/useCategories";
 import WhatsappFloat from "./WhatsappFloat";
 import CategoryNavigation from "./catalog/CategoryNavigation";
+import MyRepairsPanel from "./MyRepairsPanel";
 import { BRAND } from "../../config/brand";
 
 export default function PublicLayout() {
@@ -94,13 +95,8 @@ export default function PublicLayout() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link 
-              to="/servicio-tecnico"
-              className="hidden lg:flex items-center gap-2 rounded-xl border border-primary/20 bg-primary-light/50 px-4 py-2 text-sm font-semibold text-primary transition-all hover:bg-primary-light hover:border-primary/40 cursor-pointer"
-            >
-              <Wrench className="h-4 w-4" />
-              <span>Servicio Técnico</span>
-            </Link>
+            {/* Panel de Mis Reparaciones */}
+            <MyRepairsPanel />
 
             <Link 
               to="/catalogo/favoritos"

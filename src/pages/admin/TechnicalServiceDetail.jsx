@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Save, Loader2, User, Phone, Mail, Image as ImageIcon } from "lucide-react";
 import toast from "react-hot-toast";
-import PageContainer from "../../../components/layout/PageContainer";
-import { getTechnicalServiceById, updateTechnicalService } from "../../../services/technicalService";
-import { TECH_STATUS_OPTIONS, DEVICE_CONFIG, QUOTE_STATUS } from "../../../constants/technicalService";
-import { useAuth } from "../../../context/AuthContext";
-import { formatCurrency } from "../../../utils/formatCurrency";
+import PageContainer from "../../components/layout/PageContainer";
+import { getTechnicalServiceById, updateTechnicalService } from "../../services/technicalService";
+import { TECH_STATUS_OPTIONS, DEVICE_CONFIG, QUOTE_STATUS } from "../../constants/technicalService";
+import { useAuth } from "../../context/AuthContext";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 function Section({ title, children }) {
   return (

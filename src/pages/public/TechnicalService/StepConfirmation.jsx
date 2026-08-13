@@ -1,14 +1,38 @@
 import { CheckCircle2, Copy, ArrowRight, Store } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { DEVICE_CONFIG } from "../../../constants/technicalService";
 
+const LS_KEY = "smartshoppy_repairs";
+
+function saveRepairToLocalStorage(result, formData) {
+  try {
+    const existing = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    const newEntry = {
+      trackingCode: result.trackingCode,
+      id: result.id,
+      deviceType: formData.deviceType,
+      brand: formData.brand,
+      model: formData.model,
+      serviceLabel: formData.serviceLabel,
+      createdAt: new Date().toISOString(),
+    };
+    // Evitar duplicados
+    const filtered = existing.filter((r) => r.trackingCode !== result.trackingCode);
+    localStorage.setItem(LS_KEY, JSON.stringify([newEntry, ...filtered].slice(0, 10)));
+  } catch (_) {}
+}
+
 export default function StepConfirmation({ result, formData }) {
   const [copied, setCopied] = useState(false);
-  const navigate = useNavigate();
   const deviceCfg = DEVICE_CONFIG[formData.deviceType];
+
+  // Guardar en localStorage al montar la confirmación
+  useEffect(() => {
+    saveRepairToLocalStorage(result, formData);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCopy = async () => {
     try {

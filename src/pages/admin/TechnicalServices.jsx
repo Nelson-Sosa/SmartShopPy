@@ -8,10 +8,10 @@ import {
   Loader2 
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import PageContainer from "../../../components/layout/PageContainer";
-import EmptyState from "../../../components/ui/EmptyState";
-import { getTechnicalServices } from "../../../services/technicalService";
-import { TECH_STATUS_CONFIG, DEVICE_CONFIG, TECH_STATUS_OPTIONS, DEVICE_TYPE } from "../../../constants/technicalService";
+import PageContainer from "../../components/layout/PageContainer";
+import EmptyState from "../../components/ui/EmptyState";
+import { getTechnicalServices } from "../../services/technicalService";
+import { TECH_STATUS_CONFIG, DEVICE_CONFIG, TECH_STATUS_OPTIONS, DEVICE_TYPE } from "../../constants/technicalService";
 
 const PAGE_SIZE = 20;
 

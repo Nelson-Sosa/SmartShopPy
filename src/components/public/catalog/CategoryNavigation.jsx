@@ -84,7 +84,7 @@ function CategoryNavigationBase({ categories = [], selectedCategory, onSelectCat
       icon: getIconForCategory(cat),
       action: () => onSelectCategory(cat),
     })),
-    { id: "servicio", label: "Servicio Técnico", icon: Wrench, action: () => {} },
+    { id: "servicio", label: "Servicio Técnico", icon: Wrench, action: () => navigate("/servicio-tecnico") },
   ];
 
   return (
