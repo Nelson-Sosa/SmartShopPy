@@ -67,6 +67,27 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Counters collection (for tracking codes, invoices, etc)
+    match /counters/{document} {
+      // Anyone can read and update counters to generate IDs
+      allow read, write: if true;
+    }
+
+    // Technical Services collection
+    match /technical_services/{serviceId} {
+      // Anyone can create (clients without account)
+      allow create: if true;
+      // Anyone can read by their trackingCode (public query)
+      allow read: if true;
+      // Admin can update everything
+      // Client can only change quoteStatus if it's pending
+      allow update: if isAdmin() || (
+        resource.data.quoteStatus == "pending"
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["quoteStatus", "quoteApprovedAt", "quoteRejectedAt", "updatedAt", "status", "history"])
+      );
+      allow delete: if false;
+    }
+
     // Deny everything else
     match /{document=**} {
       allow read, write: if false;

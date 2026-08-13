@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { LogIn, LogOut, ShoppingCart, Heart, Search } from "lucide-react";
+import { LogIn, LogOut, ShoppingCart, Heart, Search, Wrench } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useCart } from "../../context/CartContext";
@@ -94,6 +94,14 @@ export default function PublicLayout() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Link 
+              to="/servicio-tecnico"
+              className="hidden lg:flex items-center gap-2 rounded-xl border border-primary/20 bg-primary-light/50 px-4 py-2 text-sm font-semibold text-primary transition-all hover:bg-primary-light hover:border-primary/40 cursor-pointer"
+            >
+              <Wrench className="h-4 w-4" />
+              <span>Servicio Técnico</span>
+            </Link>
+
             <Link 
               to="/catalogo/favoritos"
               className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer ${isWishlistRoute ? 'bg-red-50 text-danger ring-1 ring-danger/20' : 'bg-gray-50 text-gray-600 hover:bg-red-50 hover:text-danger'}`}

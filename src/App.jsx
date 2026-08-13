@@ -25,6 +25,11 @@ const Catalog = lazy(() => import("./pages/public/Catalog"));
 const ProductPublicDetail = lazy(() => import("./pages/public/ProductPublicDetail"));
 const CartPublic = lazy(() => import("./pages/public/CartPublic"));
 const Wishlist = lazy(() => import("./pages/public/Wishlist"));
+const TechnicalServices = lazy(() => import("./pages/admin/TechnicalServices"));
+const TechnicalServiceDetail = lazy(() => import("./pages/admin/TechnicalServiceDetail"));
+const TechnicalServiceWizard = lazy(() => import("./pages/public/TechnicalService"));
+const TrackingPage = lazy(() => import("./pages/public/TechnicalService/TrackingPage"));
+const TrackingDetail = lazy(() => import("./pages/public/TechnicalService/TrackingDetail"));
 
 function PageLoader() {
   return (
@@ -67,6 +72,8 @@ function App() {
               <Route path="clientes/:id" element={<ClientDetail />} />
               <Route path="gastos" element={<GastosOperativos />} />
               <Route path="pedidos" element={<Pedidos />} />
+              <Route path="servicio-tecnico" element={<TechnicalServices />} />
+              <Route path="servicio-tecnico/:id" element={<TechnicalServiceDetail />} />
             </Route>
 
             <Route path="/catalogo" element={<PublicLayout />}>
@@ -74,6 +81,12 @@ function App() {
               <Route path="carrito" element={<CartPublic />} />
               <Route path="favoritos" element={<Wishlist />} />
               <Route path=":id" element={<ProductPublicDetail />} />
+            </Route>
+
+            <Route path="/servicio-tecnico" element={<PublicLayout />}>
+              <Route index element={<TechnicalServiceWizard />} />
+              <Route path="seguimiento" element={<TrackingPage />} />
+              <Route path="seguimiento/:code" element={<TrackingDetail />} />
             </Route>
 
             <Route path="/dashboard" element={<Navigate to="/admin/dashboard" replace />} />

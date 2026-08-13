@@ -13,6 +13,7 @@ import {
   ChevronRight,
   X,
   ClipboardList,
+  Wrench,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { BRAND } from "../../config/brand";
@@ -22,6 +23,7 @@ const mainNav = [
   { name: "Ventas", href: "/admin/ventas", icon: ShoppingCart },
   { name: "Historial", href: "/admin/historial", icon: History },
   { name: "Pedidos", href: "/admin/pedidos", icon: ClipboardList },
+  { name: "Servicio Técnico", href: "/admin/servicio-tecnico", icon: Wrench },
   { name: "Clientes", href: "/admin/clientes", icon: Users },
   { name: "Gastos", href: "/admin/gastos", icon: DollarSign },
   { name: "Productos", href: "/admin/productos", icon: Package },
