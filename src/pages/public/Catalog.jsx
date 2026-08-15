@@ -3,6 +3,7 @@ import { Search, SlidersHorizontal, X, Package } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import { subscribeToActiveProducts } from "../../services/publicProductService";
 import ProductCard from "../../components/public/ProductCard";
+import ProductQuickView from "../../components/public/ProductQuickView";
 import BottomSheet from "../../components/ui/BottomSheet";
 import PublicCatalogLayout from "../../components/public/catalog/PublicCatalogLayout";
 import FeaturedProducts from "../../components/public/catalog/FeaturedProducts";
@@ -27,11 +28,41 @@ export default function Catalog() {
   
   const [visibleCount, setVisibleCount] = useState(20);
 
+  // Referencias para evitar scroll en el montaje inicial
+  const prevSearch = useRef(searchParams.get("q") || "");
+  const prevCategory = useRef(searchParams.get("category") || "all");
+
+  // Efecto para el auto-scroll hacia los resultados
+  useEffect(() => {
+    const currentSearch = searchParams.get("q") || "";
+    const currentCategory = searchParams.get("category") || "all";
+    
+    // Solo scrollear si cambió la búsqueda o categoría después del montaje inicial
+    if (prevSearch.current !== currentSearch || prevCategory.current !== currentCategory) {
+      prevSearch.current = currentSearch;
+      prevCategory.current = currentCategory;
+      
+      // Esperar brevemente a que el DOM se actualice con los nuevos resultados
+      setTimeout(() => {
+        const resultsSection = document.getElementById("catalogo-completo");
+        if (resultsSection) {
+          resultsSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, [searchParams]);
+
   // Sincronizar URL hacia el estado local
   useEffect(() => {
     setSearch(searchParams.get("q") || "");
     setSelectedCategory(searchParams.get("category") || "all");
   }, [searchParams]);
+
+  const quickviewId = searchParams.get("quickview");
+  const quickviewProduct = useMemo(() => {
+    if (!quickviewId) return null;
+    return products.find(p => p.id === quickviewId) || null;
+  }, [quickviewId, products]);
 
   // Actualizar URL cuando cambia la categoría desde la sidebar
   const handleSelectCategory = (cat) => {
@@ -144,25 +175,29 @@ export default function Catalog() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             
             {/* Buscador móvil (oculto en lg porque está en el header) */}
-            <div className="relative w-full lg:hidden">
+            <form 
+              className="relative w-full lg:hidden"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (search.trim()) {
+                  searchParams.set("q", search.trim());
+                } else {
+                  searchParams.delete("q");
+                }
+                setSearchParams(searchParams);
+              }}
+            >
               <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Buscar productos..."
                 value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  if (e.target.value) {
-                    searchParams.set("q", e.target.value);
-                  } else {
-                    searchParams.delete("q");
-                  }
-                  setSearchParams(searchParams);
-                }}
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full rounded-xl border border-border bg-white py-3 pl-10 pr-10 text-[16px] text-gray-800 placeholder-gray-400 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 sm:text-sm"
               />
               {search && (
                 <button
+                  type="button"
                   onClick={() => {
                     setSearch("");
                     searchParams.delete("q");
@@ -173,7 +208,7 @@ export default function Catalog() {
                   <X className="h-4 w-4" />
                 </button>
               )}
-            </div>
+            </form>
 
             {/* Breadcrumb de filtros activos y Botón Ordenar */}
             <div className="flex w-full flex-row-reverse sm:flex-row items-center justify-between sm:w-auto gap-4">
@@ -353,6 +388,17 @@ export default function Catalog() {
           <div className="flex justify-center py-8">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent shadow-sm" />
           </div>
+        )}
+
+        {/* Quick View Modal */}
+        {quickviewProduct && (
+          <ProductQuickView 
+            product={quickviewProduct} 
+            onClose={() => {
+              searchParams.delete("quickview");
+              setSearchParams(searchParams);
+            }} 
+          />
         )}
       </div>
     </div>

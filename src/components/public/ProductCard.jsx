@@ -61,14 +61,9 @@ function ProductCardBase({ product }) {
         {/* Acciones rápidas */}
         {!isOutOfStock && (
           <div className="mb-3.5 flex flex-row justify-center gap-1.5 sm:gap-2">
-            <AddToCartButton product={product} size="desktop" className="hidden sm:flex" />
-            <AddToCartButton product={product} size="mobile" className="sm:hidden" />
-            
-            <QuickViewButton product={product} size="desktop" className="hidden sm:flex" />
-            <QuickViewButton product={product} size="mobile" className="sm:hidden" />
-
-            <FavoriteButton product={product} size="desktop" className="hidden sm:flex" />
-            <FavoriteButton product={product} size="mobile" className="sm:hidden" />
+            <AddToCartButton product={product} />
+            <QuickViewButton product={product} />
+            <FavoriteButton product={product} />
           </div>
         )}
 

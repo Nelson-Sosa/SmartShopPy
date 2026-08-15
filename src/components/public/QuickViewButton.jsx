@@ -1,10 +1,12 @@
 import { memo, useState } from "react";
 import { Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 function QuickViewButtonBase({ product, size = "desktop", className = "" }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isHovered, setIsHovered] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -14,10 +16,15 @@ function QuickViewButtonBase({ product, size = "desktop", className = "" }) {
     
     setIsAnimating(true);
     
-    // reset click animation state
     setTimeout(() => {
       setIsAnimating(false);
-      navigate(`/catalogo/${product.id}`);
+      // If we are not in the catalog, navigate to catalog with quickview param
+      if (!location.pathname.startsWith("/catalogo")) {
+        navigate(`/catalogo?quickview=${product.id}`);
+      } else {
+        searchParams.set("quickview", product.id);
+        setSearchParams(searchParams);
+      }
     }, 250);
   };
 

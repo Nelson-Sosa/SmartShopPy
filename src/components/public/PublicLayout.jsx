@@ -10,6 +10,7 @@ import WhatsappFloat from "./WhatsappFloat";
 import CategoryNavigation from "./catalog/CategoryNavigation";
 import MyRepairsPanel from "./MyRepairsPanel";
 import BrandLogo from "../ui/BrandLogo";
+import Footer from "./Footer";
 import { BRAND } from "../../config/brand";
 
 export default function PublicLayout() {
@@ -164,14 +165,7 @@ export default function PublicLayout() {
 
       <WhatsappFloat />
 
-      <footer className="border-t border-border bg-white py-6">
-        <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-3">
-          <BrandLogo size="sm" noLink />
-          <p className="text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} {BRAND.name} &mdash; Todos los derechos reservados.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
