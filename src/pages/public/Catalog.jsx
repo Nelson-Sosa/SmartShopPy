@@ -170,53 +170,13 @@ export default function Catalog() {
           </p>
         </div>
 
-        {/* Sticky Search + Filter bar */}
-        <div className="sticky top-24 z-30 space-y-2 bg-white/95 pb-3 pt-2 backdrop-blur-sm sm:space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-            
-            {/* Buscador móvil (oculto en lg porque está en el header) */}
-            <form 
-              className="relative w-full lg:hidden"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (search.trim()) {
-                  searchParams.set("q", search.trim());
-                } else {
-                  searchParams.delete("q");
-                }
-                setSearchParams(searchParams);
-              }}
-            >
-              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Buscar productos..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-xl border border-border bg-white py-3 pl-10 pr-10 text-[16px] text-gray-800 placeholder-gray-400 outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 sm:text-sm"
-              />
-              {search && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSearch("");
-                    searchParams.delete("q");
-                    setSearchParams(searchParams);
-                  }}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </form>
-
-            {/* Breadcrumb de filtros activos y Botón Ordenar */}
-            <div className="flex w-full flex-row-reverse sm:flex-row items-center justify-between sm:w-auto gap-4">
-              
-              {/* Resultados info */}
-              <div className="text-xs text-gray-500 hidden sm:block">
-                Mostrando <span className="font-semibold text-gray-800">{filtered.length}</span> resultados
-              </div>
+        {/* Sticky Filter bar */}
+        <div className="sticky top-[118px] sm:top-24 z-30 bg-white/95 pb-3 pt-2 backdrop-blur-sm">
+          <div className="flex items-center justify-between gap-4">
+            {/* Resultados info */}
+            <div className="text-xs text-gray-500 hidden sm:block">
+              Mostrando <span className="font-semibold text-gray-800">{filtered.length}</span> resultados
+            </div>
 
               {/* Botón Ordenar */}
               <div className="shrink-0 flex items-center gap-2">
@@ -245,7 +205,6 @@ export default function Catalog() {
               </div>
             </div>
           </div>
-        </div>
 
         {/* Bottom Sheet para Filtros y Orden (Mobile) */}
         <BottomSheet 

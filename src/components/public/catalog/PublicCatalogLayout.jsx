@@ -4,19 +4,13 @@ import CatalogHero from "./CatalogHero";
 import TechnicalServiceCard from "./TechnicalServiceCard";
 
 export default function PublicCatalogLayout({ categories, selectedCategory, onSelectCategory }) {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-  const toggleDrawer = () => setIsDrawerOpen((prev) => !prev);
-
   return (
     <div className="flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-stretch">
-      {/* Columna Izquierda: Sidebar (Fija en Desktop, Drawer en Mobile) */}
+      {/* Columna Izquierda: Sidebar (Fija en Desktop) */}
       <CategoriesSidebar
         categories={categories}
         selectedCategory={selectedCategory}
         onSelectCategory={onSelectCategory}
-        isDrawerOpen={isDrawerOpen}
-        onDrawerToggle={toggleDrawer}
       />
 
       {/* Columnas Central y Derecha (Apiladas en tablet/mobile) */}

@@ -81,7 +81,7 @@ export default function Footer() {
           {/* 1. Brand & Socials */}
           <div className="flex flex-col gap-6 md:col-span-1">
             <div className="flex flex-col gap-3">
-              <BrandLogo size="lg" className="text-white brightness-200 contrast-125" dark />
+              <BrandLogo size="lg" className="opacity-90" dark />
               <p className="text-sm text-gray-400">
                 Tecnología, productos y soluciones para vos.
               </p>

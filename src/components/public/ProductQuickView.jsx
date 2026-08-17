@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, Minus, Plus, ShoppingBag, Check } from "lucide-react";
+import { X, Minus, Plus, ShoppingCart, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import ProductImage from "../ui/ProductImage";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -185,7 +185,7 @@ export default function ProductQuickView({ product, onClose }) {
                    : 'bg-primary text-white hover:bg-primary-dark'
                }`}
              >
-               {inCart ? <Check size={18} /> : <ShoppingBag size={18} />}
+               {inCart ? <Check size={18} /> : <ShoppingCart size={18} />}
                {isOutOfStock ? 'AGOTADO' : inCart ? 'AGREGADO AL CARRITO' : 'AGREGAR AL CARRITO'}
              </motion.button>
              

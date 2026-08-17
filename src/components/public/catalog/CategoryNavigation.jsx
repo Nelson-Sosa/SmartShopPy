@@ -1,76 +1,8 @@
 import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  Home,
-  Laptop,
-  Smartphone,
-  MonitorPlay,
-  Gamepad2,
-  Headphones,
-  Cable,
-  Printer,
-  Camera,
-  Monitor,
-  Cpu,
-  Speaker,
-  Keyboard,
-  Mouse,
-  HardDrive,
-  Tablet,
-  Watch,
-  Armchair,
-  Wrench,
-  Tag,
-  LayoutGrid,
-} from "lucide-react";
-
-// Map of category name keywords to lucide icons
-const CATEGORY_ICON_MAP = {
-  notebook: Laptop,
-  laptop: Laptop,
-  celular: Smartphone,
-  telefono: Smartphone,
-  smartphone: Smartphone,
-  televisor: MonitorPlay,
-  tv: MonitorPlay,
-  monitor: Monitor,
-  gaming: Gamepad2,
-  gamer: Gamepad2,
-  juego: Gamepad2,
-  consola: Gamepad2,
-  auricular: Headphones,
-  audio: Speaker,
-  parlante: Speaker,
-  cable: Cable,
-  red: Cable,
-  impresora: Printer,
-  insumo: Printer,
-  camara: Camera,
-  filmacion: Camera,
-  tablet: Tablet,
-  procesador: Cpu,
-  componente: Cpu,
-  teclado: Keyboard,
-  mouse: Mouse,
-  disco: HardDrive,
-  almacenamiento: HardDrive,
-  reloj: Watch,
-  silla: Armchair,
-  mesa: Armchair,
-  accesorio: Tag,
-  tecnologia: Cpu,
-  electrodomestico: Monitor,
-};
-
-function getIconForCategory(categoryName) {
-  if (!categoryName) return LayoutGrid;
-  const lower = categoryName.toLowerCase();
-  for (const [keyword, icon] of Object.entries(CATEGORY_ICON_MAP)) {
-    if (lower.includes(keyword)) return icon;
-  }
-  return LayoutGrid;
-}
+import { Home, Wrench } from "lucide-react";
+import { getIconForCategory } from "../../../utils/categoryIcons";
 
 function CategoryNavigationBase({ categories = [], selectedCategory, onSelectCategory }) {
   const navigate = useNavigate();

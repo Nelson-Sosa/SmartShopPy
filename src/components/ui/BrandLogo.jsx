@@ -28,6 +28,7 @@ export default function BrandLogo({
   className = "",
   noLink = false,
   to = "/catalogo",
+  dark = false,
 }) {
   const sizeStyles = {
     sm:                "w-[clamp(120px,16vw,150px)] max-h-full",
@@ -47,8 +48,9 @@ export default function BrandLogo({
         "object-contain shrink-0 select-none",
         "transition-opacity duration-200 hover:opacity-90",
         sizeStyles[size] ?? sizeStyles.md,
+        dark ? "brightness-0 invert" : "",
         className,
-      ].join(" ")}
+      ].filter(Boolean).join(" ")}
       draggable={false}
     />
   );

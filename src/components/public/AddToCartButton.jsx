@@ -1,5 +1,5 @@
 import { memo, useState } from "react";
-import { ShoppingBag, Check } from "lucide-react";
+import { ShoppingCart, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../context/CartContext";
 
@@ -60,7 +60,7 @@ function AddToCartButtonBase({ product, size = "desktop", className = "" }) {
         {inCart ? (
           <Check size={iconSize} strokeWidth={1.5} />
         ) : (
-          <ShoppingBag size={iconSize} strokeWidth={1.5} />
+          <ShoppingCart size={iconSize} strokeWidth={1.5} />
         )}
       </motion.button>
     </div>
