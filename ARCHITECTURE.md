@@ -1,4 +1,4 @@
-Reglas del proyecto — Smart Shop Py
+Reglas del proyecto — SmartShopPy
 
 • Nunca crear componentes mayores a 300 líneas.
 • Cada módulo debe tener su carpeta.

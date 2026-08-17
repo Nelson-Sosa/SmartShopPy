@@ -1,8 +1,8 @@
 # Prompt Profesional — Arquitectura Responsive Mobile First
 
-## Sistema: Smart Shop Py
+## Sistema: SmartShopPy
 
-A partir de este momento, todo el sistema Smart Shop Py debe desarrollarse siguiendo una arquitectura **Mobile First**, priorizando la experiencia de uso en teléfonos móviles y tablets.
+A partir de este momento, todo el sistema SmartShopPy debe desarrollarse siguiendo una arquitectura **Mobile First**, priorizando la experiencia de uso en teléfonos móviles y tablets.
 
 ---
 
