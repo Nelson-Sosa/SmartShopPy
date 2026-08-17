@@ -52,7 +52,7 @@ const FooterAccordion = ({ title, children, defaultOpen = false }) => {
     <div className="border-b border-gray-800 md:border-none">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between py-4 md:cursor-default md:py-0"
+        className="flex w-full items-center justify-between py-3 md:cursor-default md:py-0"
       >
         <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
           {title}
@@ -62,7 +62,7 @@ const FooterAccordion = ({ title, children, defaultOpen = false }) => {
         </div>
       </button>
       
-      <div className={`overflow-hidden transition-all duration-300 md:max-h-none md:!block ${isOpen ? 'max-h-96 pb-4' : 'max-h-0'}`}>
+      <div className={`overflow-hidden transition-all duration-300 md:max-h-none md:!block ${isOpen ? 'max-h-96 pb-3' : 'max-h-0'}`}>
         <div className="md:pt-4">
           {children}
         </div>
@@ -75,14 +75,14 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
       {/* Top Main Section */}
-      <div className="mx-auto max-w-[1600px] px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4 lg:gap-12">
+      <div className="mx-auto max-w-[1600px] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-4 lg:gap-12">
           
           {/* 1. Brand & Socials */}
-          <div className="flex flex-col gap-6 md:col-span-1">
-            <div className="flex flex-col gap-3">
-              <BrandLogo size="lg" className="opacity-90" dark />
-              <p className="text-sm text-gray-400">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left gap-5 md:gap-6 md:col-span-1">
+            <div className="flex flex-col items-center md:items-start gap-2 md:gap-3">
+              <BrandLogo size="sm" className="opacity-90" dark />
+              <p className="text-sm text-gray-400 max-w-xs">
                 Tecnología, productos y soluciones para vos.
               </p>
             </div>
@@ -105,7 +105,7 @@ export default function Footer() {
 
           {/* 2. Tienda */}
           <FooterAccordion title="Tienda" defaultOpen={true}>
-            <ul className="flex flex-col gap-3">
+            <ul className="grid grid-cols-2 gap-y-3 gap-x-2 md:flex md:flex-col md:gap-3">
               <li>
                 <Link to="/catalogo" className="flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-primary-light">
                   <LayoutGrid size={16} /> Catálogo
@@ -199,16 +199,16 @@ export default function Footer() {
         </div>
 
         {/* Mobile Info Badges (Shown only on small screens for reference) */}
-        <div className="mt-8 flex flex-col gap-4 md:hidden">
-           <div className="flex items-center gap-3 rounded-lg bg-gray-800/50 p-4">
-              <ShieldCheck className="text-primary-light" size={24} />
+        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 md:hidden">
+           <div className="flex items-center gap-3 rounded-lg bg-gray-800/40 p-3.5">
+              <ShieldCheck className="text-primary-light shrink-0" size={22} />
               <div>
                 <p className="text-sm font-medium text-white">Compra 100% segura</p>
                 <p className="text-xs text-gray-400">Protegemos tus datos</p>
               </div>
            </div>
-           <div className="flex items-center gap-3 rounded-lg bg-gray-800/50 p-4">
-              <Truck className="text-primary-light" size={24} />
+           <div className="flex items-center gap-3 rounded-lg bg-gray-800/40 p-3.5">
+              <Truck className="text-primary-light shrink-0" size={22} />
               <div>
                 <p className="text-sm font-medium text-white">Envíos a todo el país</p>
                 <p className="text-xs text-gray-400">Rápidos y confiables</p>
