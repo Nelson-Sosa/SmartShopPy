@@ -126,7 +126,7 @@ export default function MyRepairsPanel() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -8 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="absolute right-0 top-12 z-50 w-80 rounded-2xl border border-border bg-white shadow-xl ring-1 ring-black/5"
+            className="fixed left-4 right-4 top-[70px] z-50 sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-80 rounded-2xl border border-border bg-white shadow-xl ring-1 ring-black/5"
           >
             {/* Header del panel */}
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
