@@ -22,7 +22,7 @@ function ProductCard({ product, cart, onAddToCart }) {
     <button
       onClick={() => !isOut && onAddToCart(product)}
       disabled={isOut}
-      className={`relative flex items-center gap-2.5 rounded-xl border-2 p-2.5 text-left transition-all active:scale-[0.98] sm:gap-3 sm:p-4 ${
+      className={`relative flex flex-col items-center gap-2 rounded-xl border-2 p-3 text-center transition-all active:scale-[0.98] sm:p-4 ${
         isOut
           ? "cursor-not-allowed border-gray-100 bg-gray-50 opacity-50"
           : inCart
@@ -31,32 +31,30 @@ function ProductCard({ product, cart, onAddToCart }) {
       }`}
     >
       {inCart && (
-        <span className="absolute -right-2 -top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-primary shadow-sm sm:h-7 sm:w-7">
+        <span className="absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-primary shadow-sm sm:h-7 sm:w-7">
           <Check className="h-3 w-3 text-white sm:h-3.5 sm:w-3.5" />
         </span>
       )}
-      {inCart && (
-        <span className="absolute -right-2 bottom-2 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white sm:hidden">
-          {inCart.quantity}
-        </span>
-      )}
-      <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-lg sm:h-16 sm:w-16 ${
+      
+      <div className={`flex h-20 w-20 shrink-0 items-center justify-center rounded-lg sm:h-24 sm:w-24 ${
         imageUrl ? "" : "bg-gray-100"
       } ${inCart ? "p-1" : ""}`}>
         {imageUrl ? (
-          <img src={imageUrl} alt={product.name} className="h-full w-full rounded-lg object-cover" />
+          <img src={imageUrl} alt={product.name} className="h-full w-full rounded-lg object-contain" />
         ) : (
-          <Package className="h-6 w-6 text-gray-300 sm:h-7 sm:w-7" />
+          <Package className="h-8 w-8 text-gray-300 sm:h-10 sm:w-10" />
         )}
       </div>
-      <div className="min-w-0 flex-1 sm:mt-2">
-        <p className="text-sm font-semibold text-gray-800 line-clamp-2 leading-tight">
+      
+      <div className="flex w-full flex-col items-center mt-1 sm:mt-2">
+        <p className="text-[13px] sm:text-sm font-semibold text-gray-800 line-clamp-2 leading-tight min-h-[36px] sm:min-h-[40px]">
           {product.name}
         </p>
-        <p className="mt-0.5 text-sm font-bold text-primary sm:mt-1 sm:text-base">
+        <p className="mt-1 text-sm font-bold text-primary sm:text-base whitespace-nowrap">
           {formatCurrency(product.salePrice)}
         </p>
-        <div className="mt-0.5 flex flex-wrap items-center gap-1.5 sm:justify-center">
+        
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5">
           {isOut ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-600">
               <X className="h-3 w-3" />
@@ -73,7 +71,7 @@ function ProductCard({ product, cart, onAddToCart }) {
             </span>
           )}
           {inCart && !isOut && (
-            <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
               {inCart.quantity} en carrito
             </span>
           )}
